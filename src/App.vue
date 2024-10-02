@@ -47,7 +47,7 @@ import { UseContextMenu } from '@metabohub/viz-context-menu'
 import {
   layoutOnNetwork,
   PathType,
-  defaultParameters
+  getDefaultParam
 } from '/home/elora/Documents/Apply-layout/dist/index'
 import type { Node } from '/home/elora/Documents/Apply-layout/dist/index'
 
@@ -84,8 +84,6 @@ function openContextMenu(Event: MouseEvent, nodeId: string) {
 }
 
 function callbackFunction() {
-  const param = defaultParameters
-  console.log(param)
   const testNode: Node = { id: 'node', x: 0, y: 0 }
   console.log(testNode)
   const testPath: PathType = PathType.ALL
@@ -96,7 +94,9 @@ function test() {
   console.log('test')
 }
 async function layout() {
-  const result = await layoutOnNetwork(network.value, networkStyle.value)
+  const parameters = getDefaultParam()
+  parameters.merge = false
+  const result = await layoutOnNetwork(network.value, networkStyle.value, parameters)
   network.value = result
 }
 </script>
