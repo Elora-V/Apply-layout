@@ -116,4 +116,12 @@ async function layout() {
   padding: 1rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adds a shadow */
 }
+
+/* Network */
+.networkViz {
+  width: 100%;
+  height: 100%;
+  top: 10%;
+  position: fixed;
+}
 </style>
