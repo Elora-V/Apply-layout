@@ -16,12 +16,13 @@
     </div>
 
     <!-- Network Component Container -->
-    <div class="network-container">
+    <div class="networkViz">
       <NetworkComponent
         v-on:contextmenu.prevent
         :network="network"
         :graphStyleProperties="networkStyle"
         @nodeRightClickEvent="openContextMenu"
+        @initZoom="getSvgPanZoomInstance"
       ></NetworkComponent>
 
       <ContextMenu
@@ -38,11 +39,17 @@
 
 <script setup lang="ts">
 import { onMounted, ref, reactive } from 'vue'
-import { importNetworkFromFile, initZoom, rescale } from '@metabohub/viz-core'
-import type { Network } from '@metabohub/viz-core/src/types/Network'
-import type { GraphStyleProperties } from '@metabohub/viz-core/src/types/GraphStyleProperties'
+import { importNetworkFromFile, rescale, svgPanZoom } from '@metabohub/viz-core'
+import type { Network, GraphStyleProperties } from '@metabohub/viz-core/dist/types'
 import { NetworkComponent } from '@metabohub/viz-core'
+import type { ContextMenuItems } from '@metabohub/viz-context-menu/dist/types/ContextMenuItems'
 import { UseContextMenu } from '@metabohub/viz-context-menu'
+import {
+  layoutOnNetwork,
+  PathType,
+  defaultParameters
+} from '/home/elora/Documents/Apply-layout/dist/index'
+import type { Node } from '/home/elora/Documents/Apply-layout/dist/index'
 
 let svgProperties = reactive({})
 let network = ref<Network>({ id: '', nodes: {}, links: [] })
@@ -50,19 +57,18 @@ const networkStyle = ref<GraphStyleProperties>({
   nodeStyles: {},
   linkStyles: {}
 })
-import {
-  layoutOnNetwork,
-  PathType,
-  defaultParameters
-} from '/home/elora/Documents/Apply-layout/dist/index'
-
-import type { Node } from '/home/elora/Documents/Apply-layout/dist/index'
-const menuProps = UseContextMenu.defineMenuProps([{ label: 'test', action: test }])
+const menuProps: ContextMenuItems = UseContextMenu.defineMenuProps([
+  { label: 'test', action: test }
+])
 
 onMounted(() => {
-  console.log('mounted')
-  svgProperties = initZoom()
+  // console.log('mounted')
+  // svgProperties = initZoom()
 })
+
+function getSvgPanZoomInstance(instance: typeof svgPanZoom) {
+  svgProperties = instance
+}
 
 function loadFile(event: Event) {
   const target = event.target as HTMLInputElement
@@ -79,7 +85,6 @@ function openContextMenu(Event: MouseEvent, nodeId: string) {
 
 function callbackFunction() {
   const param = defaultParameters
-
   console.log(param)
   const testNode: Node = { id: 'node', x: 0, y: 0 }
   console.log(testNode)
@@ -91,7 +96,6 @@ function test() {
   console.log('test')
 }
 async function layout() {
-  console.log('layout')
   const result = await layoutOnNetwork(network.value, networkStyle.value)
   network.value = result
 }
@@ -112,14 +116,4 @@ async function layout() {
   padding: 1rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adds a shadow */
 }
-
-/* Network component container takes the remaining space */
-/* .network-container {
-  flex: 1;
-  display: flex;
-  justify-content: center; 
-  align-items: center; 
-  overflow: hidden; 
-  position: relative;
-} */
 </style>
