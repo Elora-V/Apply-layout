@@ -1,31 +1,39 @@
 <template>
-  <button v-on:click="rescale(svgProperties)">Rescale</button>
+  <div class="app-container">
+    <!-- Navigation Bar -->
+    <div class="nav-bar">
+      <button v-on:click="rescale(svgProperties)">Rescale</button>
 
-  <input
-    type="file"
-    accept=".json, .xml"
-    label="File input"
-    v-on:change="loadFile"
-    class="margin"
-  />
+      <input
+        type="file"
+        accept=".json, .xml"
+        label="File input"
+        v-on:change="loadFile"
+        class="margin"
+      />
 
-  <button v-on:click="layout()" class="styled-button">Layout</button>
+      <button v-on:click="layout()" class="styled-button">Layout</button>
+    </div>
 
-  <NetworkComponent
-    v-on:contextmenu.prevent
-    :network="network"
-    :graphStyleProperties="networkStyle"
-    @nodeRightClickEvent="openContextMenu"
-  ></NetworkComponent>
+    <!-- Network Component Container -->
+    <div class="network-container">
+      <NetworkComponent
+        v-on:contextmenu.prevent
+        :network="network"
+        :graphStyleProperties="networkStyle"
+        @nodeRightClickEvent="openContextMenu"
+      ></NetworkComponent>
 
-  <ContextMenu
-    v-if="menuProps.showMenu"
-    :actions="menuProps.contextMenuActions"
-    @action-clicked="UseContextMenu.handleActionClick"
-    @closeMenu="UseContextMenu.closeContextMenu"
-    :x="menuProps.menuX"
-    :y="menuProps.menuY"
-  ></ContextMenu>
+      <ContextMenu
+        v-if="menuProps.showMenu"
+        :actions="menuProps.contextMenuActions"
+        @action-clicked="UseContextMenu.handleActionClick"
+        @closeMenu="UseContextMenu.closeContextMenu"
+        :x="menuProps.menuX"
+        :y="menuProps.menuY"
+      ></ContextMenu>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -45,10 +53,10 @@ const networkStyle = ref<GraphStyleProperties>({
 import {
   layoutOnNetwork,
   PathType,
-  defaultParameters,
-  Node
-} from '/home/elora/Documents/apply-layout/dist/index'
+  defaultParameters
+} from '/home/elora/Documents/Apply-layout/dist/index'
 
+import type { Node } from '/home/elora/Documents/Apply-layout/dist/index'
 const menuProps = UseContextMenu.defineMenuProps([{ label: 'test', action: test }])
 
 onMounted(() => {
@@ -91,4 +99,27 @@ async function layout() {
 
 <style scoped>
 @import '@metabohub/viz-core/dist/style.css';
+/* Flex container */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Full viewport height */
+}
+
+/* Navigation bar */
+.nav-bar {
+  background-color: #f8f9fa; /* Adjust as needed */
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adds a shadow */
+}
+
+/* Network component container takes the remaining space */
+/* .network-container {
+  flex: 1;
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  overflow: hidden; 
+  position: relative;
+} */
 </style>
