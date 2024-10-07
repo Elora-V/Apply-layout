@@ -95,7 +95,8 @@ function test() {
 }
 async function layout() {
   const parameters = getDefaultParam()
-  parameters.merge = false
+  parameters.shiftCoord = true
+  parameters.numberNodeOnEdge = 3
   const result = await layoutOnNetwork(network.value, networkStyle.value, parameters)
   network.value = result
 }
