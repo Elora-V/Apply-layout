@@ -41,7 +41,7 @@ import { onMounted, ref, reactive } from 'vue'
 import { importNetworkFromFile, rescale, svgPanZoom } from '@metabohub/viz-core'
 import type { Network, GraphStyleProperties } from '@metabohub/viz-core/dist/types'
 import { NetworkComponent } from '@metabohub/viz-core'
-import type { ContextMenuItems } from '@metabohub/viz-context-menu/dist/types/ContextMenuItems'
+import type { ContextMenuItems } from '@metabohub/viz-context-menu/dist/types'
 import { UseContextMenu } from '@metabohub/viz-context-menu'
 import {
   layoutOnNetwork,
@@ -76,10 +76,11 @@ function loadFile(event: Event) {
   importNetworkFromFile(file, network, networkStyle, callbackFunction)
 }
 
-function openContextMenu(Event: MouseEvent, nodeId: string) {
+function openContextMenu(Event: MouseEvent, node: Node) {
   // to DEBUG
-  console.log('event !')
-  UseContextMenu.showContextMenu(Event, nodeId)
+  console.log(Event)
+  console.log(node)
+  UseContextMenu.showContextMenu(Event, node.id)
 }
 
 function callbackFunction() {
