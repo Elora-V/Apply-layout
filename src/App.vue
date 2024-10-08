@@ -24,16 +24,15 @@
         @nodeRightClickEvent="openContextMenu"
         @initZoom="getSvgPanZoomInstance"
       ></NetworkComponent>
-
-      <ContextMenu
-        v-if="menuProps.showMenu"
-        :actions="menuProps.contextMenuActions"
-        @action-clicked="UseContextMenu.handleActionClick"
-        @closeMenu="UseContextMenu.closeContextMenu"
-        :x="menuProps.menuX"
-        :y="menuProps.menuY"
-      ></ContextMenu>
     </div>
+    <ContextMenu
+      v-if="menuProps.showMenu"
+      :actions="menuProps.contextMenuActions"
+      @action-clicked="UseContextMenu.handleActionClick"
+      @closeMenu="UseContextMenu.closeContextMenu"
+      :x="menuProps.menuX"
+      :y="menuProps.menuY"
+    ></ContextMenu>
   </div>
 </template>
 
@@ -102,14 +101,14 @@ async function layout() {
 }
 </script>
 
-<style scoped>
+<style>
 @import '@metabohub/viz-core/dist/style.css';
-/* Flex container */
+/* Flex container 
 .app-container {
   display: flex;
   flex-direction: column;
-  height: 100vh; /* Full viewport height */
-}
+  height: 100vh;  Full viewport height 
+}*/
 
 /* Navigation bar */
 .nav-bar {
