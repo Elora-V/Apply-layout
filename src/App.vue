@@ -39,16 +39,12 @@
 <script setup lang="ts">
 import { onMounted, ref, reactive } from 'vue'
 import { importNetworkFromFile, rescale, svgPanZoom } from '@metabohub/viz-core'
-import type { Network, GraphStyleProperties } from '@metabohub/viz-core/dist/types'
+import type { Network, GraphStyleProperties, Link, Node } from '@metabohub/viz-core/dist/types'
 import { NetworkComponent } from '@metabohub/viz-core'
 import type { ContextMenuItems } from '@metabohub/viz-context-menu/dist/types'
 import { UseContextMenu } from '@metabohub/viz-context-menu'
-import {
-  layoutOnNetwork,
-  PathType,
-  getDefaultParam
-} from '/home/elora/Documents/Apply-layout/dist/index'
-import type { Node } from '/home/elora/Documents/Apply-layout/dist/index'
+import { layoutOnNetwork, PathType, getDefaultParam } from '/dist_layout/dist/index'
+import { nodes, links } from '/public/HistidineMetabolism.ts'
 
 let svgProperties = reactive({})
 let network = ref<Network>({ id: '', nodes: {}, links: [] })
@@ -61,6 +57,10 @@ const menuProps: ContextMenuItems = UseContextMenu.defineMenuProps([
 ])
 
 onMounted(() => {
+  network.value.nodes = nodes
+  network.value.links = links
+
+  console.log(network.value)
   // console.log('mounted')
   // svgProperties = initZoom()
 })
@@ -84,6 +84,32 @@ function openContextMenu(Event: MouseEvent, node: Node) {
 }
 
 function callbackFunction() {
+  Object.values(network.value.nodes).forEach((value) => {
+    const node = value as Node
+    if (node.metadata && node.metadata.position) delete node.metadata.position
+    if (node.metadata && node.metadata.classes) delete node.metadata.classes
+    if (node.hidden) delete node.hidden
+    if (node.metadata && Object.keys(node.metadata).length === 0) delete node.metadata
+  })
+  console.log(JSON.stringify(network.value.nodes))
+
+  let links = ''
+  Object.values(network.value.links).forEach((value) => {
+    const link = value as Link
+    if (link.metadata && link.metadata.classes) delete link.metadata.classes
+    if (link.metadata && Object.keys(link.metadata).length === 0) delete link.metadata
+    links =
+      links +
+      '{\n id: "' +
+      link.id +
+      '",\n source: nodes.' +
+      link.source.id +
+      ' ,\n  target: nodes.' +
+      link.target.id +
+      '},\n'
+  })
+  console.log(links)
+
   const testNode: Node = { id: 'node', x: 0, y: 0 }
   console.log(testNode)
   const testPath: PathType = PathType.ALL
