@@ -339,7 +339,8 @@ export const nodes: { [key: string]: Node } = {
     y: 21,
     label: 'r_2',
     metadata: {
-      isReversible: true
+      isReversible: true,
+      isSideCompound: false
     },
     classes: ['reaction']
   },
@@ -419,7 +420,8 @@ export const nodes: { [key: string]: Node } = {
     y: 57,
     label: 'r_10',
     metadata: {
-      isReversible: false
+      isReversible: false,
+      isSideCompound: false
     },
     classes: ['reaction']
   },

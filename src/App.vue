@@ -60,7 +60,6 @@ onMounted(() => {
   network.value.nodes = nodes
   network.value.links = links
 
-  console.log(network.value)
   // console.log('mounted')
   // svgProperties = initZoom()
 })
@@ -91,7 +90,6 @@ function callbackFunction() {
     if (node.hidden) delete node.hidden
     if (node.metadata && Object.keys(node.metadata).length === 0) delete node.metadata
   })
-  console.log(JSON.stringify(network.value.nodes))
 
   let links = ''
   Object.values(network.value.links).forEach((value) => {
